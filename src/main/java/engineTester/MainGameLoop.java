@@ -2,6 +2,7 @@ package engineTester;
 
 import entities.Camera;
 import entities.Entity;
+import entities.Light;
 import models.TextureModel;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
@@ -102,10 +103,11 @@ public class MainGameLoop {
 
         };
 
-        RawModel model = OBJLoader.loadObjModel("knight", loader);
-        ModelTexture texture = new ModelTexture(loader.loadTexture("black/knight"));
+        RawModel model = OBJLoader.loadObjModel("queen", loader);
+        ModelTexture texture = new ModelTexture(loader.loadTexture("white/queen"));
         TextureModel textureModel = new TextureModel(model, texture);
         Entity entity = new Entity(textureModel, new Vector3f(0, 0, -5), 0, 0, 0, 1);
+        Light light = new Light(new Vector3f(0, 10, -20), new Vector3f(1, 1, 1));
         Camera camera = new Camera();
 
         while (!Display.isCloseRequested()) {
@@ -113,6 +115,7 @@ public class MainGameLoop {
             camera.move();
             renderer.prepare();
             shader.start();
+            shader.loadLight(light);
             shader.loadViewMatrix(camera);
             renderer.render(entity, shader);
             shader.stop();
