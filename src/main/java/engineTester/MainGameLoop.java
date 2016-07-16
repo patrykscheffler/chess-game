@@ -103,11 +103,14 @@ public class MainGameLoop {
 
         };
 
-        RawModel model = OBJLoader.loadObjModel("queen", loader);
-        ModelTexture texture = new ModelTexture(loader.loadTexture("white/queen"));
+        RawModel model = OBJLoader.loadObjModel("board", loader);
+        ModelTexture texture = new ModelTexture(loader.loadTexture("board"));
+        texture.setShineDamper(10);
+        texture.setReflectivity(1);
+
         TextureModel textureModel = new TextureModel(model, texture);
         Entity entity = new Entity(textureModel, new Vector3f(0, 0, -5), 0, 0, 0, 1);
-        Light light = new Light(new Vector3f(0, 10, -20), new Vector3f(1, 1, 1));
+        Light light = new Light(new Vector3f(0, 20, -20), new Vector3f(1, 1, 1));
         Camera camera = new Camera();
 
         while (!Display.isCloseRequested()) {
