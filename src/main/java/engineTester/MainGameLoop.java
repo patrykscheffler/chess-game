@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import models.RawModel;
+import renderEngine.OBJLoader;
 import renderEngine.Renderer;
 import shaders.StaticShader;
 import textures.ModelTexture;
@@ -101,14 +102,14 @@ public class MainGameLoop {
 
         };
 
-        RawModel model = loader.loadToVAO(vertices, textureCoords, indices);
-        ModelTexture texture = new ModelTexture(loader.loadTexture("BlueGreenBrick"));
+        RawModel model = OBJLoader.loadObjModel("knight", loader);
+        ModelTexture texture = new ModelTexture(loader.loadTexture("black/knight"));
         TextureModel textureModel = new TextureModel(model, texture);
         Entity entity = new Entity(textureModel, new Vector3f(0, 0, -5), 0, 0, 0, 1);
         Camera camera = new Camera();
 
         while (!Display.isCloseRequested()) {
-            entity.increaseRotation(0.2f, 0.2f, 0);
+            entity.increaseRotation(0.2f, 0.4f, 0);
             camera.move();
             renderer.prepare();
             shader.start();
