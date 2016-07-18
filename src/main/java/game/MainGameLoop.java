@@ -11,6 +11,10 @@ import models.RawModel;
 import terrains.Terrain;
 import textures.ModelTexture;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public class MainGameLoop {
 
     public static void main(String[] args) {
@@ -18,15 +22,11 @@ public class MainGameLoop {
         DisplayManager.createDisplay();
         Loader loader = new Loader();
 
-        RawModel model = OBJLoader.loadObjModel("board", loader);
-        TexturedModel texturedModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("board")));
-        texturedModel.getTexture().setReflectivity(0.1f);
-        texturedModel.getTexture().setShineDamper(3);
-        Entity entity = new Entity(texturedModel, new Vector3f(0, 0, 0), 0, 0, 0, 10);
-
-        model = OBJLoader.loadObjModel("king", loader);
-        texturedModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("white/king")));
-        Entity king = new Entity(texturedModel, new Vector3f(0, 2.2f, 0), 0, 0, 0, 10);
+        List<Entity> entities = new ArrayList<>();
+        ChessBoard chessBoard = new ChessBoard(loader);
+        entities.addAll(chessBoard.getBlackPieces());
+        entities.addAll(chessBoard.getWhitePieces());
+        entities.add(chessBoard.getBoard());
 
         Terrain terrain1 = new Terrain(0, 0, loader, new ModelTexture(loader.loadTexture("wood")));
         Terrain terrain2 = new Terrain(-1, 0, loader, new ModelTexture(loader.loadTexture("wood")));
@@ -45,8 +45,9 @@ public class MainGameLoop {
             renderer.processTerrain(terrain3);
             renderer.processTerrain(terrain4);
 
-            renderer.processEntity(entity);
-            renderer.processEntity(king);
+            for (Entity entity : entities) {
+                renderer.processEntity(entity);
+            }
 
             renderer.render(light, camera);
             DisplayManager.updateDisplay();
