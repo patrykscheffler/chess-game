@@ -8,6 +8,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import shaders.StaticShader;
+import shaders.TerrainShader;
+import terrains.Terrain;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,25 +25,43 @@ public class MasterRenderer {
     private Matrix4f projectionMatrix;
 
     private StaticShader shader = new StaticShader();
-    private Renderer renderer;
+    private EntityRenderer entityRenderer;
+
+    private TerrainShader terrainShader = new TerrainShader();
+    private TerrainRenderer terrainRenderer;
+
+    private Map<TexturedModel, List<Entity>> entities = new HashMap<>();
+    private List<Terrain> terrains = new ArrayList<>();
 
     public MasterRenderer() {
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glCullFace(GL11.GL_BACK);
         createProjectionMatrix();
-        renderer = new Renderer(shader, projectionMatrix);
+        entityRenderer = new EntityRenderer(shader, projectionMatrix);
+        terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
     }
 
-    private Map<TexturedModel, List<Entity>> entities = new HashMap<>();
-
     public void render(Light sun, Camera camera) {
-        renderer.prepare();
+        prepare();
+
         shader.start();
         shader.loadLight(sun);
         shader.loadViewMatrix(camera);
-        renderer.render(entities);
+        entityRenderer.render(entities);
         shader.stop();
+
+        terrainShader.start();
+        terrainShader.loadLight(sun);
+        terrainShader.loadViewMatrix(camera);
+        terrainRenderer.render(terrains);
+        terrainShader.stop();
+
         entities.clear();
+        terrains.clear();
+    }
+
+    public void processTerrain(Terrain terrain) {
+        terrains.add(terrain);
     }
 
     public void processEntity(Entity entity) {
@@ -56,8 +76,15 @@ public class MasterRenderer {
         }
     }
 
+    public void prepare() {
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GL11.glClearColor(0.53f, 0.8f, 0.97f, 1);
+    }
+
     public void cleanUp() {
         shader.cleanUp();
+        terrainShader.cleanUp();
     }
 
     private void createProjectionMatrix() {
