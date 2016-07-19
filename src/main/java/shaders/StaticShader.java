@@ -7,8 +7,8 @@ import toolbox.Maths;
 
 public class StaticShader extends ShaderProgram {
 
-    public static final String VERTEX_FILE = "src/main/java/shaders/vertexShader.txt";
-    public static final String FRAGEMENT_FILE = "src/main/java/shaders/fragmentShader.txt";
+    public static final String VERTEX_FILE = "/shaders/vertexShader.txt";
+    public static final String FRAGEMENT_FILE = "/shaders/fragmentShader.txt";
 
     private int location_transformationMatrix;
     private int location_projectionMatrix;

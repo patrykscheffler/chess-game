@@ -3,16 +3,13 @@ package game;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
-import models.TexturedModel;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
-import models.RawModel;
 import terrains.Terrain;
 import textures.ModelTexture;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MainGameLoop {
@@ -28,10 +25,11 @@ public class MainGameLoop {
         entities.addAll(chessBoard.getWhitePieces());
         entities.add(chessBoard.getBoard());
 
-        Terrain terrain1 = new Terrain(0, 0, loader, new ModelTexture(loader.loadTexture("wood")));
-        Terrain terrain2 = new Terrain(-1, 0, loader, new ModelTexture(loader.loadTexture("wood")));
-        Terrain terrain3 = new Terrain(0, -1, loader, new ModelTexture(loader.loadTexture("wood")));
-        Terrain terrain4 = new Terrain(-1, -1, loader, new ModelTexture(loader.loadTexture("wood")));
+        ModelTexture texture = new ModelTexture(loader.loadTexture("wood"));
+        Terrain terrain1 = new Terrain(0, 0, loader, texture);
+        Terrain terrain2 = new Terrain(-1, 0, loader, texture);
+        Terrain terrain3 = new Terrain(0, -1, loader, texture);
+        Terrain terrain4 = new Terrain(-1, -1, loader, texture);
 
         Light light = new Light(new Vector3f(0, 20, -10), new Vector3f(1, 1, 1));
         Camera camera = new Camera();
