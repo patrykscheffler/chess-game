@@ -12,7 +12,7 @@ public class OBJLoader {
 
     public static RawModel loadObjModel(String fileName, Loader loader) {
 
-        InputStream in = Class.class.getResourceAsStream("/" + fileName + ".obj");
+        InputStream in = Class.class.getResourceAsStream("/models/" + fileName + ".obj");
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
         String line;

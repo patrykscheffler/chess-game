@@ -36,7 +36,7 @@ public class Loader {
     public int loadTexture(String fileName) {
         Texture texture = null;
         try {
-            texture = TextureLoader.getTexture("PNG", Class.class.getResourceAsStream("/" + fileName + ".png"));
+            texture = TextureLoader.getTexture("PNG", Class.class.getResourceAsStream("/textures/git " + fileName + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
