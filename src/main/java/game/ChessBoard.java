@@ -130,10 +130,10 @@ public class ChessBoard {
             case "bishop1":
                 entity.increasePosition(6, y, 14 * factor);
                 break;
-            case "queen":
+            case "king":
                 entity.increasePosition(2, y, 14 * factor);
                 break;
-            case "king":
+            case "queen":
                 entity.increasePosition(-2, y, 14 * factor);
                 break;
             case "bishop2":
