@@ -3,6 +3,8 @@ package game;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import models.RawModel;
+import models.TexturedModel;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.*;
@@ -31,9 +33,16 @@ public class MainGameLoop {
         Terrain terrain3 = new Terrain(0, -1, loader, texture);
         Terrain terrain4 = new Terrain(-1, -1, loader, texture);
 
+        RawModel model = OBJLoader.loadObjModel("lamp", loader);
+        TexturedModel texturedModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("white")));
+        Entity lamp1 = new Entity(texturedModel, new Vector3f(-50, 26, -10), 0, 0, 0, 1);
+        Entity lamp2 = new Entity(texturedModel, new Vector3f(50, 26, 10), 0, 0, 0, 1);
+
+
+
         List<Light> lights = new ArrayList<>();
-        lights.add(new Light(new Vector3f(-5, 20, -10), new Vector3f(1, 0, 0)));
-        lights.add(new Light(new Vector3f(40, 10, 30), new Vector3f(0, 1, 0)));
+        lights.add(new Light(new Vector3f(-50, 30, -10), new Vector3f(1, 1, 1)));
+        lights.add(new Light(new Vector3f(50, 30, 10), new Vector3f(1, 1, 1)));
 
         Camera camera = new Camera();
         MasterRenderer renderer = new MasterRenderer();
@@ -49,6 +58,8 @@ public class MainGameLoop {
             for (Entity entity : entities) {
                 renderer.processEntity(entity);
             }
+            renderer.processEntity(lamp1);
+            renderer.processEntity(lamp2);
 
             renderer.render(lights, camera);
             DisplayManager.updateDisplay();
