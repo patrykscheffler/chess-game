@@ -31,7 +31,10 @@ public class MainGameLoop {
         Terrain terrain3 = new Terrain(0, -1, loader, texture);
         Terrain terrain4 = new Terrain(-1, -1, loader, texture);
 
-        Light light = new Light(new Vector3f(0, 20, -10), new Vector3f(1, 1, 1));
+        List<Light> lights = new ArrayList<>();
+        lights.add(new Light(new Vector3f(-5, 20, -10), new Vector3f(1, 0, 0)));
+        lights.add(new Light(new Vector3f(40, 10, 30), new Vector3f(0, 1, 0)));
+
         Camera camera = new Camera();
         MasterRenderer renderer = new MasterRenderer();
 
@@ -47,7 +50,7 @@ public class MainGameLoop {
                 renderer.processEntity(entity);
             }
 
-            renderer.render(light, camera);
+            renderer.render(lights, camera);
             DisplayManager.updateDisplay();
         }
 
