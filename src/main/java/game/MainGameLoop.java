@@ -11,12 +11,13 @@ import renderEngine.*;
 import terrains.Terrain;
 import textures.ModelTexture;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainGameLoop {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         DisplayManager.createDisplay();
         Loader loader = new Loader();
@@ -38,14 +39,19 @@ public class MainGameLoop {
         Entity lamp1 = new Entity(texturedModel, new Vector3f(-50, 26, -10), 0, 0, 0, 1);
         Entity lamp2 = new Entity(texturedModel, new Vector3f(50, 26, 10), 0, 0, 0, 1);
 
-
-
         List<Light> lights = new ArrayList<>();
         lights.add(new Light(new Vector3f(-50, 30, -10), new Vector3f(1, 1, 1)));
         lights.add(new Light(new Vector3f(50, 30, 10), new Vector3f(1, 1, 1)));
 
         Camera camera = new Camera();
         MasterRenderer renderer = new MasterRenderer();
+
+        List<String> moveStrings = PGNLoader.moveStringsFromPGN(PGNLoader.readFile("byrne_fischer_1956"));
+        int i = 1;
+        for (String move : moveStrings) {
+            System.out.println(i + ". " + move);
+            i++;
+        }
 
         while (!Display.isCloseRequested()) {
             camera.move();
