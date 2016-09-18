@@ -5,6 +5,21 @@ import java.util.List;
 
 public class PGNLoader {
 
+    public static List<Integer> movesFromPGN(String pgn) {
+        List<String> moveStrings = moveStringsFromPGN(pgn);
+        List<Integer> allMoves = new ArrayList<>();
+
+        for (String moveString : moveStrings) {
+
+
+            moveString = moveString.replace("+","");
+            moveString = moveString.replace("#","");
+            moveString = moveString.replace("x","");
+        }
+
+        return allMoves;
+    }
+
     public static String readFile(String fileName) {
         InputStream in = Class.class.getResourceAsStream("/games/" + fileName + ".pgn");
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -34,7 +49,7 @@ public class PGNLoader {
         boolean readingMove = false;
 
         String moveStartChars = "abcdefghrnbkqo";
-        String moveChars = "12345678abcdefghrnbkqo=x+#";
+        String moveChars = "12345678abcdefghrnbkqo=-x+#";
         String currentMoveString = "";
 
         for (int i = 0; i < pgn.length(); i++) {

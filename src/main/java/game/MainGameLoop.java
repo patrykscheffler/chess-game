@@ -24,9 +24,9 @@ public class MainGameLoop {
 
         List<Entity> entities = new ArrayList<>();
         ChessBoard chessBoard = new ChessBoard(loader);
-        entities.addAll(chessBoard.getBlackPieces());
-        entities.addAll(chessBoard.getWhitePieces());
         entities.add(chessBoard.getBoard());
+
+        Game game = new Game("beliavsky_nunn_1985", chessBoard);
 
         ModelTexture texture = new ModelTexture(loader.loadTexture("wood"));
         Terrain terrain1 = new Terrain(0, 0, loader, texture);
@@ -46,12 +46,7 @@ public class MainGameLoop {
         Camera camera = new Camera();
         MasterRenderer renderer = new MasterRenderer();
 
-        List<String> moveStrings = PGNLoader.moveStringsFromPGN(PGNLoader.readFile("byrne_fischer_1956"));
-        int i = 1;
-        for (String move : moveStrings) {
-            System.out.println(i + ". " + move);
-            i++;
-        }
+        // game.update();
 
         while (!Display.isCloseRequested()) {
             camera.move();
@@ -64,10 +59,26 @@ public class MainGameLoop {
             for (Entity entity : entities) {
                 renderer.processEntity(entity);
             }
+            for (Entity entity : chessBoard.getWhitePieces()) {
+                renderer.processEntity(entity);
+            }
+            for (Entity entity : chessBoard.getBlackPieces()) {
+                renderer.processEntity(entity);
+            }
+            for (Entity entity : chessBoard.getRemovedBlackPieces()) {
+                renderer.processEntity(entity);
+            }
+            for (Entity entity : chessBoard.getRemovedWhitePieces()) {
+                renderer.processEntity(entity);
+            }
+
             renderer.processEntity(lamp1);
             renderer.processEntity(lamp2);
 
             renderer.render(lights, camera);
+
+            game.update();
+
             DisplayManager.updateDisplay();
         }
 
