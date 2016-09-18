@@ -26,7 +26,9 @@ public class MainGameLoop {
         ChessBoard chessBoard = new ChessBoard(loader);
         entities.add(chessBoard.getBoard());
 
-        Game game = new Game("beliavsky_nunn_1985", chessBoard);
+        //Game game = new Game("beliavsky_nunn_1985", chessBoard);
+        Game game = new Game("byrne_fischer_1956", chessBoard);
+        //Game game = new Game("kasparov_topalov_1999", chessBoard);
 
         ModelTexture texture = new ModelTexture(loader.loadTexture("wood"));
         Terrain terrain1 = new Terrain(0, 0, loader, texture);

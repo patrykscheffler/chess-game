@@ -8,6 +8,9 @@ import renderEngine.Loader;
 import renderEngine.OBJLoader;
 import textures.ModelTexture;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.util.*;
 
 public class ChessBoard {
@@ -179,6 +182,7 @@ public class ChessBoard {
                     }
 
                     animation = false;
+                    audioPlay("chess.wav");
                 }
             }).start();
 
@@ -240,6 +244,7 @@ public class ChessBoard {
                     entity2.setPosition(position);
 
                     animation = false;
+                    audioPlay("chess.wav");
                 }
             }).start();
         }
@@ -345,7 +350,7 @@ public class ChessBoard {
 
         if (key.length() > 0) {
             Entity removedPiece = this.whitePieces.get(key);
-            removedPiece.setPosition(new Vector3f(22, 0, -16 + (this.removedWhitePieces.size() * 4)));
+            removedPiece.setPosition(new Vector3f(22 + ((this.removedWhitePieces.size() / 9) * 4), 0, -16 + ((this.removedWhitePieces.size() % 9) * 4)));
             this.removedWhitePieces.add(removedPiece);
             this.whitePieces.remove(key);
             key = "";
@@ -359,10 +364,27 @@ public class ChessBoard {
 
         if (key.length() > 0) {
             Entity removedPiece = this.blackPieces.get(key);
-            removedPiece.setPosition(new Vector3f(-22, 0, 16 + (this.removedBlackPieces.size() * (-4))));
+            removedPiece.setPosition(new Vector3f(-22 - ((this.removedBlackPieces.size() / 9) * 4), 0, 16 + ((this.removedBlackPieces.size() % 9) * (-4))));
             this.removedBlackPieces.add(removedPiece);
             this.blackPieces.remove(key);
         }
+    }
+
+    public static synchronized void audioPlay(String fileLoc) {new Thread(new Runnable() {
+
+        public void run() {
+            try {
+                Clip clip = AudioSystem.getClip();
+                AudioInputStream ais= AudioSystem.getAudioInputStream(
+                        Class.class.getResourceAsStream("/audio/" + fileLoc));
+                clip.open(ais);
+                clip.start();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }).start();
     }
 
     public List<Entity> getRemovedWhitePieces() {
