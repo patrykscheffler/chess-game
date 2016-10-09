@@ -267,7 +267,7 @@ public class ChessBoard {
     }
 
     public void piecePosition(String key, Entity entity, int factor) {
-        float y = 2;
+        float y = 2.1f;
 
         switch (key) {
             case "pawn1":
